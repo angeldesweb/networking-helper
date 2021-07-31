@@ -1,0 +1,30 @@
+{
+  "name": "subnetting-helper",
+  "version": "0.0.1",
+  "description": "helper to networking",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"webpack --watch",
+    "start":"node dist/main.js"
+  },
+  "keywords": [
+    "VLSM",
+    "CIDR",
+    "IP",
+    "ADDRESS",
+    "NETWORKING"
+  ],
+  "author": "angeldesweb",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.8",
+    "babel-loader": "^8.2.2",
+    "webpack": "^5.47.1",
+    "webpack-cli": "^4.7.2"
+  }
+}
