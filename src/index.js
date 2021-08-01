@@ -40,16 +40,7 @@ const networkFinder = ({address,mask}) => {
 
 }
 
-const AddressToFind = {
-    address:[192,192,192,192],
-    mask:24
-}
-
-const ipv4Info = networkFinder(AddressToFind);
-
-console.log(ipv4Info);
-
-export {
+module.exports = {
     networkFinder,
     maskPrefixToIp
 }
