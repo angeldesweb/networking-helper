@@ -1,5 +1,5 @@
 {
-  "name": "subnetting-helper",
+  "name": "networking-helper",
   "version": "1.0.0",
   "description": "helper to networking",
   "main": "index.js",
@@ -9,6 +9,7 @@
     "start": "node dist/main.js",
     "jsdoc":"jsdoc --readme README.md -c jsdoc.json"
   },
+  "homepage":"https://angeldesweb.github.io/networking-helper/",
   "keywords": [
     "VLSM",
     "CIDR",
