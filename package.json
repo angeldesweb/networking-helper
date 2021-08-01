@@ -1,6 +1,6 @@
 {
   "name": "subnetting-helper",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "helper to networking",
   "main": "index.js",
   "scripts": {
