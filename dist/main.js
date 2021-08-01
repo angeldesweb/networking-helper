@@ -96,54 +96,78 @@ var ipBinarioADecimal = function ipBinarioADecimal(array) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "networkFinder": () => (/* binding */ networkFinder)
+/* harmony export */   "ipValidateAndFormat": () => (/* binding */ ipValidateAndFormat),
+/* harmony export */   "maskValidate": () => (/* binding */ maskValidate)
 /* harmony export */ });
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _conversiones__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _validate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+ //Función para validar direcciones ipv4 y dar formato para uso en las funciones desde donde se llama esta función.
+
+var ipValidateAndFormat = function ipValidateAndFormat(address) {
+  //Validar que se reciba algún parámetro.
+  if (!address) throw new Error('ERROR: No se recibió ningún argumento. No argument was received'); //Condición cuando se recibe una cadena de texto.
+
+  if (typeof address === 'string') {
+    //Validar que la cadena tenga un formato de cuatro octetos "xxx.xxx.xxx.xxx"
+    if (!address.split) throw new Error('ERROR: Debe ingresar una ip válida. Ejemplo "192.192.192.192"; You must enter a valid ip. Example "192.192.192.192".');
+    if (address.split('.').length != 4) throw new Error('ERROR: Debe ingresar una ip válida. Ejemplo "192.192.192.192"; You must enter a valid ip. Example "192.192.192.192".'); //Dividiendo el string en un arreglo de 4 elementos con cada octeto.
+
+    var _addressStrArray = address.split('.'); //Convirtiendo los elementos de String a Number.
 
 
+    address = _addressStrArray.map(function (i) {
+      return Number(i);
+    }); //Validando que ningún octeto pase de 255
+
+    var toHigh = lodash__WEBPACK_IMPORTED_MODULE_0___default().findIndex(address, function (item) {
+      return item > 255;
+    });
+
+    if (toHigh != -1) throw new Error("ERROR: El octeto en la posici\xF3n n\xFAmero ".concat(toHigh + 1, " es mayor a 255, No es un octeto v\xE1lido. The octet in position number ").concat(toHigh + 1, " is greater than 255, It is not a valid octet")); //Validando que ningún octeto sea negativo
+
+    var toLittle = lodash__WEBPACK_IMPORTED_MODULE_0___default().findIndex(address, function (item) {
+      return item < 0;
+    });
+
+    if (toLittle != -1) throw new Error("ERROR: El octeto en la posici\xF3n n\xFAmero ".concat(toLittle + 1, " es negativo, No es un octeto v\xE1lido. The octet in position number ").concat(toLittle + 1, " is negative, it is not a valid octet.")); //Devolviendo el arreglo correcto;
+
+    return address;
+  } //Condición al recibir un arreglo
 
 
-var findNetAddress = function findNetAddress(binary, bits) {
-  var netAddress = lodash__WEBPACK_IMPORTED_MODULE_0___default().fill(binary, 0, 0, bits);
+  if (address.length === 4) {
+    //Convirtiendo en un caso de recibir un arreglo de String.
+    address = addressStrArray.map(function (i) {
+      return Number(i);
+    }); //Validando que ningún octeto pase de 255
 
-  var networkDecimalAddress = (0,_conversiones__WEBPACK_IMPORTED_MODULE_1__.ipBinarioADecimal)(netAddress);
-  return networkDecimalAddress;
+    var _toHigh = lodash__WEBPACK_IMPORTED_MODULE_0___default().findIndex(address, function (item) {
+      return item > 255;
+    });
+
+    if (_toHigh != -1) throw new Error("ERROR: El octeto en la posici\xF3n n\xFAmero ".concat(_toHigh + 1, " es mayor a 255, No es un octeto v\xE1lido. The octet in position number ").concat(_toHigh + 1, " is greater than 255, It is not a valid octet")); //Validando que ningún octeto sea negativo
+
+    var _toLittle = lodash__WEBPACK_IMPORTED_MODULE_0___default().findIndex(address, function (item) {
+      return item < 0;
+    });
+
+    if (_toLittle != -1) throw new Error("ERROR: El octeto en la posici\xF3n n\xFAmero ".concat(_toLittle + 1, " es negativo, No es un octeto v\xE1lido. The octet in position number ").concat(_toLittle + 1, " is negative, it is not a valid octet.")); //Devolviendo el arreglo correcto;
+
+    return address;
+  }
 };
 
-var findBroadAddress = function findBroadAddress(binary, bits) {
-  var broadcastAddress = lodash__WEBPACK_IMPORTED_MODULE_0___default().fill(binary, 1, 0, bits);
+var maskValidate = function maskValidate(mask) {
+  //Validando que se reciben argumentos de
+  if (!mask) throw new Error('ERROR: No se recibió ningún argumento. No argument was received'); //validando que solo se reciba un prefijo de red
 
-  var broadcastDecimalAddress = (0,_conversiones__WEBPACK_IMPORTED_MODULE_1__.ipBinarioADecimal)(broadcastAddress);
-  return broadcastDecimalAddress;
-};
+  if (typeof mask != 'number') throw new Error('ERROR: Prefijo de máscara inválido, tipo no admitido. Invalid mask prefix, type not supported.'); //Validando que el prefijo no pase de 32 ni sea un número negativo.
 
-var networkFinder = function networkFinder(_ref) {
-  var address = _ref.address,
-      mask = _ref.mask;
-  var bit = 32 - mask;
-  var validAddress = (0,_validate__WEBPACK_IMPORTED_MODULE_2__.ipValidateAndFormat)({
-    address: address
-  });
-  if (_validate__WEBPACK_IMPORTED_MODULE_2__.ipValidateAndFormat.error) return {
-    error: _validate__WEBPACK_IMPORTED_MODULE_2__.ipValidateAndFormat.error
-  };
-  var ipAddress = validAddress.address;
-  var binaryArray = (0,_conversiones__WEBPACK_IMPORTED_MODULE_1__.ipDecimalABinario)({
-    octeto1: ipAddress[0],
-    octeto2: ipAddress[1],
-    octeto3: ipAddress[2],
-    octeto4: ipAddress[3]
-  });
-  var networkAddress = findNetAddress(binaryArray, bit);
-  var broadcastAddress = findBroadAddress(binaryArray, bit);
-  return {
-    address: validAddress.address,
-    network: networkAddress,
-    broadcast: broadcastAddress
-  };
+  if (typeof mask === 'number') {
+    if (mask > 32) throw new Error('ERROR: Prefijo de máscara inválido. Invalid mask prefix');
+    if (mask < 0) throw new Error('ERROR: Prefijo de máscara inválido. Invalid mask prefix');
+    return mask;
+  }
 };
 
 
@@ -17363,47 +17387,27 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ipValidateAndFormat": () => (/* binding */ ipValidateAndFormat)
+/* harmony export */   "findNetAddress": () => (/* binding */ findNetAddress),
+/* harmony export */   "findBroadAddress": () => (/* binding */ findBroadAddress)
 /* harmony export */ });
-var ipValidateAndFormat = function ipValidateAndFormat(_ref) {
-  var address = _ref.address;
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _conversiones__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 
-  if (typeof address === 'string') {
-    if (!address.split) return {
-      error: 'Ip no válida.'
-    };
-    if (address.split('.').length != 4) return {
-      error: 'Ip no válida.'
-    };
-    var addressStrArray = address.split('.');
-    address = addressStrArray.map(function (i) {
-      return Number(i);
-    });
 
-    var invalid = _.findIndex(address, function (item) {
-      return item > 255;
-    });
 
-    if (invalid != -1) return {
-      error: "El octeto en la posici\xF3n n\xFAmero ".concat(invalid + 1, " es mayor a 255, No es un octeto v\xE1lido")
-    };
-    return {
-      address: address
-    };
-  }
+var findNetAddress = function findNetAddress(binary, bits) {
+  var netAddress = lodash__WEBPACK_IMPORTED_MODULE_0___default().fill(binary, 0, 0, bits);
 
-  if (address.length === 4) {
-    var _invalid = _.findIndex(address, function (item) {
-      return item > 255;
-    });
+  var networkDecimalAddress = (0,_conversiones__WEBPACK_IMPORTED_MODULE_1__.ipBinarioADecimal)(netAddress);
+  return networkDecimalAddress;
+};
 
-    if (_invalid != -1) return {
-      error: "El octeto en la posici\xF3n n\xFAmero ".concat(_invalid + 1, " es mayor a 255, No es un octeto v\xE1lido")
-    };
-    return {
-      address: address
-    };
-  }
+var findBroadAddress = function findBroadAddress(binary, bits) {
+  var broadcastAddress = lodash__WEBPACK_IMPORTED_MODULE_0___default().fill(binary, 1, 0, bits);
+
+  var broadcastDecimalAddress = (0,_conversiones__WEBPACK_IMPORTED_MODULE_1__.ipBinarioADecimal)(broadcastAddress);
+  return broadcastDecimalAddress;
 };
 
 
@@ -17416,7 +17420,8 @@ var ipValidateAndFormat = function ipValidateAndFormat(_ref) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "maskPrefixToBinary": () => (/* binding */ maskPrefixToBinary),
-/* harmony export */   "maskBinaryToIp": () => (/* binding */ maskBinaryToIp)
+/* harmony export */   "maskBinaryToIp": () => (/* binding */ maskBinaryToIp),
+/* harmony export */   "maskPrefixToIp": () => (/* binding */ maskPrefixToIp)
 /* harmony export */ });
 /* harmony import */ var _conversiones__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
@@ -17445,6 +17450,18 @@ var maskPrefixToBinary = function maskPrefixToBinary(prefix) {
 var maskBinaryToIp = function maskBinaryToIp(binary) {
   var maskIp = (0,_conversiones__WEBPACK_IMPORTED_MODULE_0__.ipBinarioADecimal)(binary);
   return maskIp;
+};
+/**
+ * @function maskPrefixToIp
+ * @param {number} prefix Netmask prefix to convert to ip. Prefijo de máscara de red a convertir en ip.
+ * @returns {Array} - Network mask in Array format. Máscara de red en formato Array.          
+ */
+
+
+var maskPrefixToIp = function maskPrefixToIp(prefix) {
+  var binary = maskPrefixToBinary(prefix);
+  var ipmask = maskBinaryToIp(binary);
+  return ipmask;
 };
 
 
@@ -17548,20 +17565,58 @@ var __webpack_exports__ = {};
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "decimalABinario": () => (/* reexport safe */ _conversiones__WEBPACK_IMPORTED_MODULE_0__.decimalABinario),
-/* harmony export */   "binarioADecimal": () => (/* reexport safe */ _conversiones__WEBPACK_IMPORTED_MODULE_0__.binarioADecimal),
-/* harmony export */   "networkFinder": () => (/* reexport safe */ _ipFinders__WEBPACK_IMPORTED_MODULE_1__.networkFinder)
+/* harmony export */   "networkFinder": () => (/* binding */ networkFinder),
+/* harmony export */   "maskPrefixToIp": () => (/* reexport safe */ _mask__WEBPACK_IMPORTED_MODULE_1__.maskPrefixToIp)
 /* harmony export */ });
 /* harmony import */ var _conversiones__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _ipFinders__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _mask__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
+/* harmony import */ var _mask__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony import */ var _validations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
 
 
 
-var maskBinary = (0,_mask__WEBPACK_IMPORTED_MODULE_2__.maskPrefixToBinary)(29);
-console.log(maskBinary);
-var maskIp = (0,_mask__WEBPACK_IMPORTED_MODULE_2__.maskBinaryToIp)(maskBinary);
-console.log(maskIp);
+
+/**
+ * Ipv4 Address formats. String => 'xxx.xxx.xxx.xxx' | Array [xxx,xxx,xxx,xxx]
+ * @typedef {object} AddressToFind
+ * @property {(string|Array)} address - Ipv4 address to search for propierties; Dirección ipv4 a consultar.
+ * @property {number} mask - Netmask prefix of the ipv4 address; Prefijo de máscara de red de la dirección a consultar.
+ */
+
+/**
+ * @function networkFinder
+ * @param {AddressToFind} arguments - Ipv4 address and netmask prefix to search. Dirección Ipv4 y préfijo de máscara de red a consultar.  
+ * @returns {{address:Array,network:Array,broadcast:Array,netmask:Array,prefix:number,hosts:number,utilHosts:number}} A complete set of properties. Un completo esquema de propiedades.
+ */
+
+var networkFinder = function networkFinder(_ref) {
+  var address = _ref.address,
+      mask = _ref.mask;
+  var validAddress = (0,_validations__WEBPACK_IMPORTED_MODULE_3__.ipValidateAndFormat)(address);
+  var validMask = (0,_validations__WEBPACK_IMPORTED_MODULE_3__.maskValidate)(mask);
+  var ipMask = (0,_mask__WEBPACK_IMPORTED_MODULE_1__.maskPrefixToIp)(validMask);
+  var bit = 32 - validMask;
+  var hosts = Math.pow(2, bit);
+  var utilHosts = hosts - 2;
+  var binaryArray = (0,_conversiones__WEBPACK_IMPORTED_MODULE_0__.ipDecimalABinario)({
+    octeto1: validAddress[0],
+    octeto2: validAddress[1],
+    octeto3: validAddress[2],
+    octeto4: validAddress[3]
+  });
+  var networkAddress = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.findNetAddress)(binaryArray, bit);
+  var broadcastAddress = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.findBroadAddress)(binaryArray, bit);
+  return {
+    address: validAddress,
+    network: networkAddress,
+    broadcast: broadcastAddress,
+    netmask: ipMask,
+    prefix: validMask,
+    hosts: hosts,
+    utilHosts: utilHosts
+  };
+};
+
 
 })();
 

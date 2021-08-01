@@ -26,7 +26,21 @@ const maskBinaryToIp = (binary) => {
     return maskIp;
 }
 
+/**
+ * @function maskPrefixToIp
+ * @param {number} prefix Netmask prefix to convert to ip. Prefijo de máscara de red a convertir en ip.
+ * @returns {Array} - Network mask in Array format. Máscara de red en formato Array.          
+ */
+const maskPrefixToIp = (prefix) => {
+    const binary = maskPrefixToBinary(prefix);
+
+    const ipmask = maskBinaryToIp(binary);
+
+    return ipmask;
+}
+
 export {
     maskPrefixToBinary,
-    maskBinaryToIp
+    maskBinaryToIp,
+    maskPrefixToIp,
 }

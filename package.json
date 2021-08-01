@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"webpack --watch",
-    "start":"node dist/main.js"
+    "build": "webpack --watch",
+    "start": "node dist/main.js"
   },
   "keywords": [
     "VLSM",
@@ -18,12 +18,14 @@
   "author": "angeldesweb",
   "license": "MIT",
   "dependencies": {
+    "jsdoc": "^3.6.7",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.14.8",
     "babel-loader": "^8.2.2",
+    "jsdoc-webpack-plugin": "^0.3.0",
     "webpack": "^5.47.1",
     "webpack-cli": "^4.7.2"
   }

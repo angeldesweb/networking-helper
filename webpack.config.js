@@ -1,4 +1,5 @@
 const path = require('path');
+const JsDocPlugin = require('jsdoc-webpack-plugin');
 
 module.exports = {
     mode:'none',
@@ -15,5 +16,13 @@ module.exports = {
                 loader:'babel-loader'
             }
         ]
-    }
+    },
+    plugins: [
+        new JsDocPlugin({
+            conf: 'jsdoc.json',
+            cwd: '.',
+            preserveTmpFile: false,
+            recursive: false
+        })
+    ]
 }
