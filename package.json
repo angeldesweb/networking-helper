@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --watch",
-    "start": "node dist/main.js"
+    "start": "node dist/main.js",
+    "jsdoc":"jsdoc --readme README.md -c jsdoc.json"
   },
   "keywords": [
     "VLSM",
@@ -26,6 +27,7 @@
     "@babel/preset-env": "^7.14.8",
     "babel-loader": "^8.2.2",
     "jsdoc-webpack-plugin": "^0.3.0",
+    "tidy-jsdoc": "^1.4.0",
     "webpack": "^5.47.1",
     "webpack-cli": "^4.7.2"
   }

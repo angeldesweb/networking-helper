@@ -28,7 +28,7 @@ const ipValidateAndFormat = (address) => {
     //Condición al recibir un arreglo
     if(address.length === 4){
         //Convirtiendo en un caso de recibir un arreglo de String.
-        address = addressStrArray.map(i => Number(i));
+        //address = addressStrArray.map(i => Number(i));
 
         //Validando que ningún octeto pase de 255
         const toHigh = _.findIndex(address, item => {return item > 255});

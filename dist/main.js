@@ -112,10 +112,9 @@ var ipValidateAndFormat = function ipValidateAndFormat(address) {
     if (!address.split) throw new Error('ERROR: Debe ingresar una ip válida. Ejemplo "192.192.192.192"; You must enter a valid ip. Example "192.192.192.192".');
     if (address.split('.').length != 4) throw new Error('ERROR: Debe ingresar una ip válida. Ejemplo "192.192.192.192"; You must enter a valid ip. Example "192.192.192.192".'); //Dividiendo el string en un arreglo de 4 elementos con cada octeto.
 
-    var _addressStrArray = address.split('.'); //Convirtiendo los elementos de String a Number.
+    var addressStrArray = address.split('.'); //Convirtiendo los elementos de String a Number.
 
-
-    address = _addressStrArray.map(function (i) {
+    address = addressStrArray.map(function (i) {
       return Number(i);
     }); //Validando que ningún octeto pase de 255
 
@@ -137,10 +136,8 @@ var ipValidateAndFormat = function ipValidateAndFormat(address) {
 
   if (address.length === 4) {
     //Convirtiendo en un caso de recibir un arreglo de String.
-    address = addressStrArray.map(function (i) {
-      return Number(i);
-    }); //Validando que ningún octeto pase de 255
-
+    //address = addressStrArray.map(i => Number(i));
+    //Validando que ningún octeto pase de 255
     var _toHigh = lodash__WEBPACK_IMPORTED_MODULE_0___default().findIndex(address, function (item) {
       return item > 255;
     });
@@ -17617,6 +17614,12 @@ var networkFinder = function networkFinder(_ref) {
   };
 };
 
+var AddressToFind = {
+  address: [192, 192, 192, 192],
+  mask: 24
+};
+var ipv4Info = networkFinder(AddressToFind);
+console.log(ipv4Info);
 
 })();
 
