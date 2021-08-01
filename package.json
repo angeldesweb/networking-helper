@@ -9,6 +9,7 @@
     "start": "node dist/main.js",
     "jsdoc":"jsdoc --readme README.md -c jsdoc.json"
   },
+  "repository":"https://github.com/angeldesweb/networking-helper.git",
   "homepage":"https://angeldesweb.github.io/networking-helper/",
   "keywords": [
     "VLSM",
