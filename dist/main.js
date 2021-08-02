@@ -1,19 +1,31 @@
-/******/ (() => { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["networkingHelper"] = factory();
+	else
+		root["networkingHelper"] = factory();
+})(this, function() {
+return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ([
 /* 0 */
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _conversiones__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _mask__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _validations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
-/* module decorator */ module = __webpack_require__.hmd(module);
+var _require = __webpack_require__(1),
+    ipDecimalABinario = _require.ipDecimalABinario;
 
+var _require2 = __webpack_require__(2),
+    maskPrefixToIp = _require2.maskPrefixToIp;
 
+var _require3 = __webpack_require__(3),
+    findNetAddress = _require3.findNetAddress,
+    findBroadAddress = _require3.findBroadAddress;
 
-
+var _require4 = __webpack_require__(5),
+    ipValidateAndFormat = _require4.ipValidateAndFormat,
+    maskValidate = _require4.maskValidate;
 /**
  * Ipv4 Address formats. String => 'xxx.xxx.xxx.xxx' | Array [xxx,xxx,xxx,xxx]
  * @typedef {object} AddressToFind
@@ -27,23 +39,24 @@ __webpack_require__.r(__webpack_exports__);
  * @returns {{address:Array,network:Array,broadcast:Array,netmask:Array,prefix:number,hosts:number,utilHosts:number}} A complete set of properties. Un completo esquema de propiedades.
  */
 
-var networkFinder = function networkFinder(_ref) {
+
+function networkFinder(_ref) {
   var address = _ref.address,
       mask = _ref.mask;
-  var validAddress = (0,_validations__WEBPACK_IMPORTED_MODULE_3__.ipValidateAndFormat)(address);
-  var validMask = (0,_validations__WEBPACK_IMPORTED_MODULE_3__.maskValidate)(mask);
-  var ipMask = (0,_mask__WEBPACK_IMPORTED_MODULE_1__.maskPrefixToIp)(validMask);
+  var validAddress = ipValidateAndFormat(address);
+  var validMask = maskValidate(mask);
+  var ipMask = maskPrefixToIp(validMask);
   var bit = 32 - validMask;
   var hosts = Math.pow(2, bit);
   var utilHosts = hosts - 2;
-  var binaryArray = (0,_conversiones__WEBPACK_IMPORTED_MODULE_0__.ipDecimalABinario)({
+  var binaryArray = ipDecimalABinario({
     octeto1: validAddress[0],
     octeto2: validAddress[1],
     octeto3: validAddress[2],
     octeto4: validAddress[3]
   });
-  var networkAddress = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.findNetAddress)(binaryArray, bit);
-  var broadcastAddress = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.findBroadAddress)(binaryArray, bit);
+  var networkAddress = findNetAddress(binaryArray, bit);
+  var broadcastAddress = findBroadAddress(binaryArray, bit);
   return {
     address: validAddress,
     network: networkAddress,
@@ -53,11 +66,11 @@ var networkFinder = function networkFinder(_ref) {
     hosts: hosts,
     utilHosts: utilHosts
   };
-};
+}
 
 module.exports = {
   networkFinder: networkFinder,
-  maskPrefixToIp: _mask__WEBPACK_IMPORTED_MODULE_1__.maskPrefixToIp
+  maskPrefixToIp: maskPrefixToIp
 };
 
 /***/ }),
@@ -17590,21 +17603,6 @@ var maskValidate = function maskValidate(mask) {
 /******/ 		})();
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/harmony module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.hmd = (module) => {
-/******/ 			module = Object.create(module);
-/******/ 			if (!module.children) module.children = [];
-/******/ 			Object.defineProperty(module, 'exports', {
-/******/ 				enumerable: true,
-/******/ 				set: () => {
-/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
-/******/ 				}
-/******/ 			});
-/******/ 			return module;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -17637,5 +17635,7 @@ var maskValidate = function maskValidate(mask) {
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __webpack_exports__ = __webpack_require__(0);
 /******/ 	
+/******/ 	return __webpack_exports__;
 /******/ })()
 ;
+});

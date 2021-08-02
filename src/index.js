@@ -1,7 +1,7 @@
-import { ipDecimalABinario } from './conversiones';
-import { maskPrefixToIp } from './mask';
-import { findNetAddress , findBroadAddress } from './utils';
-import { ipValidateAndFormat, maskValidate } from './validations';
+const { ipDecimalABinario } = require('./conversiones');
+const { maskPrefixToIp } = require('./mask');
+const { findNetAddress , findBroadAddress } = require('./utils');
+const { ipValidateAndFormat, maskValidate } = require('./validations');
 
 /**
  * Ipv4 Address formats. String => 'xxx.xxx.xxx.xxx' | Array [xxx,xxx,xxx,xxx]
@@ -15,7 +15,7 @@ import { ipValidateAndFormat, maskValidate } from './validations';
  * @param {AddressToFind} arguments - Ipv4 address and netmask prefix to search. Dirección Ipv4 y préfijo de máscara de red a consultar.  
  * @returns {{address:Array,network:Array,broadcast:Array,netmask:Array,prefix:number,hosts:number,utilHosts:number}} A complete set of properties. Un completo esquema de propiedades.
  */
-const networkFinder = ({address,mask}) => {
+function networkFinder({address,mask}){
 
     const validAddress = ipValidateAndFormat(address);
 

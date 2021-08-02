@@ -1,6 +1,6 @@
 {
   "name": "networking-helper",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "helper to networking",
   "main": "dist/main.js",
   "scripts": {
